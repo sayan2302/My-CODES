@@ -78,16 +78,27 @@ class linked_list:
         for _ in range(pos-1):
             i=i.next
         i.next=i.next.next
+    def reverse(self):
+        prev=None
+        curr=self.head
+        after=curr.next
+        while after!=None:
+            curr.next=prev
+            prev=curr
+            curr=after
+            after=curr.next
+        curr.next=prev
+        self.head=curr
         
 if __name__ == '__main__':
     ll=linked_list()
-    ll.insert_at_beginning(23)
+    ll.insert_at_beginning(23) 
     ll.insert_at_beginning(2)
     ll.insert_at_end(45)
     # print(ll.length()) 
-    ll.insert_values(0,1,2,18)
-    ll.clear()
     ll.insert_values(7,5,3,6)
-    ll.print()
     ll.remove_at_index(2)
+    ll.clear()
+    ll.insert_values(1,2,3,4,5)
+    ll.reverse()
     ll.print()
