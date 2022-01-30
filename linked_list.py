@@ -1,94 +1,93 @@
 class Node:
-    def _init_(self,data=None,next=None):
+    def __init__(self,data=None,next=None):
         self.data=data
         self.next=next
-
-class llist:
-    def _init_(self,head=None):
-        self.head=head   
-    def print(self):
+class linked_list:
+    def __init__(self):
+        self.head=None
+    def insert_at_beginning(self,data):
+        new_node=Node(data,self.head)
+        self.head=new_node
+    def insert_at_end(self,data):
+        new_node=Node(data)
         if self.head==None:
-            print("empty linked list")
-            return
-        i=self.head
-        x='['
-        while i:
-            x+=str(i.data)+','
-            i=i.next
-        print(x[:-1]+']')
-    def insert_begin(self,data):
-        node=Node(data,self.head)
-        self.head=node
-        return       
-    def insert_last(self,data):
-        node=Node(data,None)
-        if self.head==None:
-            self.head=node
+            self.insert_at_beginning(data)
             return
         i=self.head
         while i.next:
             i=i.next
-        i.next=node
-    def insert_values(self,list):
-        #self.head=None   #to clear the LL before entering the data list
-        for i in list:
-            self.insert_last(i)    
+        i.next=new_node
+    def print(self):
+        if self.head==None:
+            print("Empty LL")
+            return
+        i=self.head
+        string=''
+        while i:
+            string+=str(i.data)+'-->'
+            i=i.next
+        print(string[:-3])
+    def clear(self):
+        self.head=None
+    def insert_values(self,*l):
+        for i in l:
+            self.insert_at_end(i)
     def length(self):
         c=0
         i=self.head
         while i:
             c+=1
             i=i.next
-        return c
-    def remove_element_at(self,pos):
+        return(c)
+    def insert_at_index(self,data,pos):
+        if pos<0 or pos>self.length():
+            raise Exception('Wrong Index')
+        c=0
         i=self.head
-        x=0
-        if pos<0 or pos>self.length()-1:
-            raise Exception('wrong Index')
+        if pos==0 or i==None:
+            self.insert_at_beginning(data)
+            return
         while i:
-            if x==pos-1:
-                i.next=i.next.next
-                break
-            x+=1
-            i=i.next  
-    def clear_all(self):
-        self.head=None
-        return
-    def insert_element_at(self,data,pos):
+            if c==pos-1:
+                next_element=i.next
+                i.next=Node(data,next_element)
+                return
+            i=i.next
+            c+=1
+    def replace_at_index(self,data,pos):
+        if self.head==None:
+            raise Exception('Empty LL')
+        if pos<0 or pos>self.length()-1 :
+            raise Exception('Wrong Index')
+        c=0
+        i=self.head
+        if pos==0:
+            i.data=data
+            return
+        for _ in range(pos):
+            i=i.next
+        i.data=data
+    def remove_at_index(self,pos):
+        if self.head==None:
+            raise Exception('Empty LL')
         if pos<0 or pos>self.length()-1:
             raise Exception('Wrong Index')
-        x=0
-        while self.head:
-            if pos==0:
-                self.insert_begin(data)
-                return
-            if x==pos-1:
-                self.head.next=Node(data,self.head.next)
-                return
-            x+=1
-            self.head=self.head.next
-    def replace_element_at(self,data,pos):
-        if pos<0 or pos>self.length()-1:
-            raise Exception('Wrong Index')
-        x=0
-        while self.head:
-            if pos==0:
-                self.head.data=data
-                return
-            if x==pos-1 or pos==0 :
-                self.head.next=Node(data,self.head.next.next)
-                break
-            x+=1
-            self.head=self.head.next
-
-ll=llist()
-ll.insert_last(78)
-ll.insert_begin(54)
-ll.insert_last(23)
-ll.clear_all()
-ll.insert_values([2,3,4,5,6,7,8,9])
-print(ll.length())
-ll.remove_element_at(2)
-ll.insert_element_at('sayan',0)
-ll.replace_element_at('aman',0)
-ll.print()
+        i=self.head
+        if pos==0:
+            i=i.next
+        for _ in range(pos-1):
+            i=i.next
+        i.next=i.next.next
+        
+if __name__ == '__main__':
+    ll=linked_list()
+    ll.insert_at_beginning(23)
+    ll.insert_at_beginning(2)
+    ll.insert_at_end(45)
+    # print(ll.length()) 
+    ll.insert_values(0,1,2,18)
+    ll.clear()
+    ll.insert_values(7,5,3,6)
+    ll.print()
+    ll.remove_at_index(2)
+    ll.print()
